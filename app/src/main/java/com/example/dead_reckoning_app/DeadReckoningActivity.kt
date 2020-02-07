@@ -20,6 +20,7 @@ import com.jjoe64.graphview.Viewport
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.android.synthetic.main.activity_dead_reckoning.*
+import kotlin.math.pow
 
 class DeadReckoningActivity : AppCompatActivity() , SensorEventListener {
 
@@ -38,7 +39,6 @@ class DeadReckoningActivity : AppCompatActivity() , SensorEventListener {
     private var xAccelerationValues = arrayListOf<Entry>()
     private var xVelocityValues = arrayListOf<Entry>()
     private var xDistanceValues = arrayListOf<Entry>()
-    var xAxes = arrayListOf<String>()
     var xaxis = 0.0f
     var graphAcc: LineChart? = null
     var graphVel: LineChart? = null
@@ -66,7 +66,7 @@ class DeadReckoningActivity : AppCompatActivity() , SensorEventListener {
         sensorManager.registerListener(
             this,
             sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
-            SensorManager.SENSOR_DELAY_NORMAL
+            SensorManager.SENSOR_DELAY_UI
         )
     }
 
@@ -87,8 +87,8 @@ class DeadReckoningActivity : AppCompatActivity() , SensorEventListener {
                 if(counter > 100) {
                     dT = ((event.timestamp - timestamp) * (1.0f / 1000000000.0f))
 
-                    var accX = event.values[0] - OffsetValues.getXOffset()
-                    if (Math.abs(event.values[0]) < 0.01) {
+                    var accX = event.values[0] - OffsetValues.getYOffset()
+                    if (Math.abs(event.values[0]) < 0.09) {
                         accX = 0.0f
                     }
 
@@ -105,7 +105,8 @@ class DeadReckoningActivity : AppCompatActivity() , SensorEventListener {
                     xVelocityValues.add(vel)
 
                     distance[0] = getDistance(velocityNew[0], dT)
-                    X += distance[0]
+                    //X += distance[0]
+                    X = (X + (velocityOld[0]*dT) + (0.5f*accX*dT*dT))
                     coordinate_text.text = "X: ${X}"
                     val dist = Entry(xaxis, X)
                     xDistanceValues.add(dist)

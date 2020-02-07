@@ -11,19 +11,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".DeadReckoningActivity"
+        <activity android:name=".SensorActivity"></activity>
+        <activity android:name=".CompareEquations" />
+        <activity
+            android:name=".DeadReckoningActivity"
             android:parentActivityName=".MainActivity">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".OffsetActivity"
+        <activity
+            android:name=".OffsetActivity"
             android:parentActivityName=".MainActivity">
-
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".MainActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>

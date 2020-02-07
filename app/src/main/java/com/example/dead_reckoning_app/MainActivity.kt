@@ -25,4 +25,14 @@ class MainActivity : AppCompatActivity(){
         startActivity(intent)
     }
 
+    fun startCompare(view:View){
+        val intent = Intent(this, CompareEquations::class.java)
+        startActivity(intent)
+    }
+
+    fun startSensorReadings(view:View){
+        val intent = Intent(this, SensorActivity::class.java)
+        startActivity(intent)
+    }
+
 }

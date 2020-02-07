@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:onClick="startSensorReadings"
     tools:context=".MainActivity">
 
     <Button
@@ -53,12 +54,34 @@
         android:layout_width="154dp"
         android:layout_height="92dp"
         android:onClick="startController"
-        android:text="Begin"
+        android:text="Plot"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.645" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="144dp"
+        android:layout_height="90dp"
+        android:onClick="startCompare"
+        android:text="Comparison"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/sensorButton"
+        android:layout_width="130dp"
+        android:layout_height="70dp"
+        android:text="Read MF and Gyro"
+        android:onClick="startSensorReadings"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
