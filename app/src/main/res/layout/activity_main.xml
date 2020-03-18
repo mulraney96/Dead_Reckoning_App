@@ -84,4 +84,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="145dp"
+        android:layout_height="88dp"
+        android:onClick="startLastHope"
+        android:text="FUCK"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

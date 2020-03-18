@@ -9,6 +9,7 @@ import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 
 class OffsetActivity : AppCompatActivity() , SensorEventListener {
 
@@ -39,7 +40,7 @@ class OffsetActivity : AppCompatActivity() , SensorEventListener {
         sensorManager.registerListener(
             this,
             sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
-            SensorManager.SENSOR_DELAY_NORMAL)
+            SensorManager.SENSOR_DELAY_UI)
 
     }
 
@@ -49,7 +50,7 @@ class OffsetActivity : AppCompatActivity() , SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent) {
-        if(xAccelerationValues!!.size <= 50){
+        if(xAccelerationValues!!.size <= 100){
             xAccelerationValues.add(event.values[0])
             yAccelerationValues.add(event.values[1])
             zAccelerationValues.add(event.values[2])

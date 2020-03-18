@@ -11,7 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".SensorActivity"></activity>
+        <activity android:name=".ThisBetterFuckingWork"></activity>
+        <activity android:name=".Plot2Activity" />
+        <activity android:name=".SensorActivity" />
         <activity android:name=".CompareEquations" />
         <activity
             android:name=".DeadReckoningActivity"
