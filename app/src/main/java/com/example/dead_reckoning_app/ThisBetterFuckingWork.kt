@@ -112,7 +112,13 @@ class ThisBetterFuckingWork : AppCompatActivity(), SensorEventListener {
                 zVel.add(newVelocityValues[2])
 
                 for(i in 0..2){
-                    distanceValues[i] = ((newVelocityValues[i]- oldVelocityValues[i])/2)* dT
+                    if((newVelocityValues[i]- oldVelocityValues[i]) < 0.4){
+                        newVelocityValues[i] = 0.0f
+                    }
+                }
+
+                for(i in 0..2){
+                    distanceValues[i] = ((newVelocityValues[i] + oldVelocityValues[i])/2)* dT
                 }
                 xDist.add(distanceValues[0])
                 yDist.add(distanceValues[1])
@@ -139,7 +145,7 @@ class ThisBetterFuckingWork : AppCompatActivity(), SensorEventListener {
 
     fun saveList(view: View){
 
-        val FILENAME = "thresh.csv"
+        val FILENAME = "avg3.csv"
         var entry = ""
         var size = xAcc.size-1
         for(i in 0..size){
