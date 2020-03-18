@@ -89,6 +89,12 @@ class ThisBetterFuckingWork : AppCompatActivity(), SensorEventListener {
                         temp = OffsetValues.getZOffset()
                     accelerationValues[i] = event.values[i]- temp
                 }
+                for(i in 0..2){
+                    if(Math.abs(accelerationValues[i])<=0.7){
+                        accelerationValues[i] = 0.0f
+                    }
+                }
+
                 xAcc.add(accelerationValues[0])
                 yAcc.add(accelerationValues[1])
                 zAcc.add(accelerationValues[2])
@@ -106,7 +112,7 @@ class ThisBetterFuckingWork : AppCompatActivity(), SensorEventListener {
                 zVel.add(newVelocityValues[2])
 
                 for(i in 0..2){
-                    distanceValues[i] = newVelocityValues[i]* dT
+                    distanceValues[i] = ((newVelocityValues[i]- oldVelocityValues[i])/2)* dT
                 }
                 xDist.add(distanceValues[0])
                 yDist.add(distanceValues[1])
@@ -133,7 +139,7 @@ class ThisBetterFuckingWork : AppCompatActivity(), SensorEventListener {
 
     fun saveList(view: View){
 
-        val FILENAME = "PleaseShowSomething2.csv"
+        val FILENAME = "thresh.csv"
         var entry = ""
         var size = xAcc.size-1
         for(i in 0..size){
