@@ -6,6 +6,9 @@ import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_this_better_fucking_work.*
 
 class MainActivity : AppCompatActivity(){
 
@@ -15,6 +18,12 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+    }
+
+    fun saveFileName(view: View){
+        val filename = editText.text.toString()
+        OffsetValues.setFileName(filename)
+        Toast.makeText(this, "Set to $filename", Toast.LENGTH_SHORT).show()
     }
 
     fun startLastHope(view: View){

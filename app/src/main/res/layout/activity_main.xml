@@ -8,6 +8,26 @@
     tools:context=".MainActivity">
 
     <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="saveFileName"
+        android:text="save filename"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Enter Filename"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button5"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/calibrate_button"
         style="@android:style/Widget.Button"
         android:layout_width="130dp"
@@ -51,48 +71,41 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="154dp"
-        android:layout_height="92dp"
+        android:layout_width="130dp"
+        android:layout_height="75dp"
         android:onClick="startController"
         android:text="Plot"
         app:layout_constraintBottom_toTopOf="@+id/divider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.645" />
+        app:layout_constraintStart_toEndOf="@+id/sensorButton" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="144dp"
-        android:layout_height="90dp"
+        android:layout_width="140dp"
+        android:layout_height="77dp"
         android:onClick="startCompare"
         android:text="Comparison"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toBottomOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/button" />
 
     <Button
         android:id="@+id/sensorButton"
-        android:layout_width="130dp"
-        android:layout_height="70dp"
-        android:text="Read MF and Gyro"
+        android:layout_width="131dp"
+        android:layout_height="77dp"
         android:onClick="startSensorReadings"
+        android:text="Read MF and Gyro"
         app:layout_constraintBottom_toTopOf="@+id/divider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="145dp"
         android:layout_height="88dp"
         android:onClick="startLastHope"
-        android:text="FUCK"
+        android:text="Last Hope"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/editText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
