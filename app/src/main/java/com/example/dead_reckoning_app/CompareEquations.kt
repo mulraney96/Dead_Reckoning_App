@@ -1,5 +1,6 @@
 package com.example.dead_reckoning_app
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.graphics.Color
@@ -10,11 +11,14 @@ import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import kotlinx.android.synthetic.main.activity_compare_equations.*
 import kotlinx.android.synthetic.main.activity_dead_reckoning.*
+import java.io.FileOutputStream
 
 class CompareEquations : AppCompatActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
@@ -29,11 +33,25 @@ class CompareEquations : AppCompatActivity(), SensorEventListener {
     var equation2: FloatArray = floatArrayOf(0.0f,0.0f,0.0f)
     var equation3: FloatArray = floatArrayOf(0.0f,0.0f,0.0f)
 
+    var gravity: FloatArray = floatArrayOf(0.0f, 0.0f, 9.8f)
+    var manualLinearAcceleration: FloatArray = floatArrayOf(0.0f, 0.0f, 0.0f)
+
     var dT: Float = 0.0f
     var timestamp: Long = 0
 
+    var manualdT = 0.0f
+    var manualTimestamp = 0L
+
     var counter: Int = 0
 
+    var compositeSensor = arrayListOf<Float>()
+    var manualSensor = arrayListOf<Float>()
+    var compositedtList = arrayListOf<Float>()
+    var manualdtList = arrayListOf<Float>()
+    var compositeTime = 0f
+    var manualTime = 0f
+
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) //locks in portrait mode
         super.onCreate(savedInstanceState)
@@ -47,12 +65,12 @@ class CompareEquations : AppCompatActivity(), SensorEventListener {
         sensorManager.registerListener(
             this,
             sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
-            SensorManager.SENSOR_DELAY_GAME
+            SensorManager.SENSOR_DELAY_NORMAL
         )
         sensorManager.registerListener(
             this,
             sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-            SensorManager.SENSOR_DELAY_GAME
+            SensorManager.SENSOR_DELAY_NORMAL
         )
         sensorManager.registerListener(
             this,
@@ -78,9 +96,17 @@ class CompareEquations : AppCompatActivity(), SensorEventListener {
                 if(counter > 100) {
                     dT = ((event.timestamp - timestamp) * (1.0f / 1000000000.0f))
 
+                    compositeTime += dT
+                    compositedtList.add(compositeTime)
+
                     var accX = event.values[0] - OffsetValues.getXOffset()
                     var accY = event.values[1] - OffsetValues.getYOffset()
                     var accZ = event.values[2] - OffsetValues.getZOffset()
+
+                    compositeSensor.add(accX)
+                    compositeSensor.add(accY)
+                    compositeSensor.add(accZ)
+
                     if (Math.abs(event.values[0]) < 0.07) {
                         accX = 0.0f
                     }
@@ -130,8 +156,76 @@ class CompareEquations : AppCompatActivity(), SensorEventListener {
             timestamp = event.timestamp
         }
 
+        if(event.sensor.type == Sensor.TYPE_ACCELEROMETER){
+            counter++
+            if (manualTimestamp != 0L) {
+                if (counter > 100) {
+                    manualdT = ((event.timestamp - manualTimestamp) * (1.0f / 1000000000.0f))
+                    manualTime += manualdT
+                    manualdtList.add(manualTime)
+                    val alpha: Float = 0.8f
+
+                    // Isolate the force of gravity with the low-pass filter.
+                    gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0]
+                    gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1]
+                    gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2]
+
+                    // Remove the gravity contribution with the high-pass filter.
+                    manualLinearAcceleration[0] = event.values[0] - gravity[0]
+                    manualLinearAcceleration[1] = event.values[1] - gravity[1]
+                    manualLinearAcceleration[2] = event.values[2] - gravity[2]
+
+                    manualSensor.add(manualLinearAcceleration[0])
+                    manualSensor.add(manualLinearAcceleration[1])
+                    manualSensor.add(manualLinearAcceleration[2])
+
+                }
+            }
+            manualTimestamp = event.timestamp
+        }
 
     }
+
+    fun saveList(view: View){
+        sensorManager.unregisterListener(this)
+
+        var FileName: String  = "Offset.csv"
+        var manualFileName: String  = "manual".plus(FileName)
+        var compositeFileName: String  = "composite".plus(FileName)
+
+
+        var compositeEntry = "0,0,0,0\n"
+        var manualEntry = "0,0,0,0\n"
+
+        var size = (compositeSensor.size /3)-1
+        Log.i("Size" , "$size")
+        for(i in 0..size){
+            Log.i("i", "$i")
+            Log.i("entry 1 ", "${compositedtList[i]},${compositeSensor[i*3]},${compositeSensor[i*3+1]},${compositeSensor[i*3+2]}\n")
+            compositeEntry = compositeEntry.plus("${compositedtList[i]},${compositeSensor[i*3]},${compositeSensor[(i*3)+1]},${compositeSensor[(i*3)+2]}\n")
+        }
+        size = (manualSensor.size / 3) - 1
+        for(i in 0..size){
+            manualEntry = manualEntry.plus("${manualdtList[i]},${manualSensor[i*3]},${manualSensor[i*3+1]},${manualSensor[i*3+2]}\n")
+        }
+        try{
+            var out: FileOutputStream = openFileOutput(manualFileName, Context.MODE_APPEND)
+            out.write(manualEntry.toByteArray())
+            Toast.makeText(this, "Saved to $filesDir/$manualFileName", Toast.LENGTH_SHORT).show()
+            out.close()
+
+            var outX: FileOutputStream = openFileOutput(compositeFileName, Context.MODE_APPEND)
+            outX.write(compositeEntry.toByteArray())
+            Toast.makeText(this, "Saved to $filesDir/$compositeFileName", Toast.LENGTH_SHORT).show()
+            outX.close()
+
+        }
+        catch(e: Exception){
+            e.printStackTrace()
+        }
+
+    }
+
 
     private fun getVelocity(vOld: Float, acc: Float, dT: Float):Float {
         var vNew: Float = vOld+(acc*dT)

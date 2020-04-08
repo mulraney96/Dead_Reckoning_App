@@ -26,8 +26,10 @@
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.331" />
 
     <TextView
         android:id="@+id/Equation3"
@@ -39,7 +41,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Equation2" />
+        app:layout_constraintTop_toBottomOf="@+id/Equation2"
+        app:layout_constraintVertical_bias="0.11" />
 
     <TextView
         android:id="@+id/textView4"
@@ -65,4 +68,14 @@
         android:text="X = Xo + Vo*dT + 1/2 *a* t^2"
         app:layout_constraintBottom_toTopOf="@+id/Equation3"
         app:layout_constraintStart_toStartOf="@+id/Equation3" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="151dp"
+        android:layout_height="94dp"
+        android:onClick="saveList"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

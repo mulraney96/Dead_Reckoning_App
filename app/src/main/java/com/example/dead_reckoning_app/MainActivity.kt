@@ -46,9 +46,5 @@ class MainActivity : AppCompatActivity(){
         startActivity(intent)
     }
 
-    fun startSensorReadings(view:View){
-        val intent = Intent(this, SensorActivity::class.java)
-        startActivity(intent)
-    }
 
 }

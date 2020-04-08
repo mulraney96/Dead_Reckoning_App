@@ -125,10 +125,10 @@ class DeadReckoningActivity : AppCompatActivity() , SensorEventListener {
                         // set acceleration to zero if there isn't a large change
                         var accX = event.values[2] - OffsetValues.getXOffset()
                       Log.i("Sensor Value", "${event.values[2]}")
-  /*                      if (accX <= 0.09 && accX > -0.09) {
+                      if (Math.abs(accX)<0.5) {
                             accX = 0.0f
                         }
-*/
+
 
                         //create acceleration graph points
                         val acc = Entry(xaxis, accX)
@@ -137,14 +137,13 @@ class DeadReckoningActivity : AppCompatActivity() , SensorEventListener {
                         //find velocity from acceleration using old velocity
                         velocityNew[0] = getVelocity(velocityNew[0], accX, dT)
 
-                        // set old velocity to new velocity
-                        velocityOld = velocityNew.clone()
+
 
                         //reset velocity to zero, an attempt to combat drift
- /*                       if (accX == 0.0f) {
+                       if (accX == 0.0f) {
                             velocityNew[0] = 0.0f
                         }
-*/
+
                         // make velocity graph points
                         val vel = Entry(xaxis, velocityNew[0])
                         xVelocityValues.add(vel)
